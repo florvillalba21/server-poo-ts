@@ -7,8 +7,8 @@ export const getProducts = async () => {
   try {
     const listProducts = await axios.get(urlBase + "/products");
 
-    const products : Product[] = listProducts.data
-    return products
+    const products = await listProducts.data
+    return  products
   } catch (error) {
     console.log(error);
     throw new Error();

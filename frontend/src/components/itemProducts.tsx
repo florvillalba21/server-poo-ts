@@ -1,6 +1,16 @@
+import { useProductContext } from "../context/products/productsContext";
 import { Product } from "../utils/products/typeProduct"
 
-export const ItemProduct = (data: Product[]) => {
+// type Props = {
+//     data: string,
+//     children: React.ReactNode
+// }
+
+export const ItemProduct = () => {
+    const { products, getProducts } = useProductContext();
+    console.log(products)
+
+
 
     return (
         <>
@@ -16,10 +26,10 @@ export const ItemProduct = (data: Product[]) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        data?.map((value, index) => {
+                    {products &&
+                        products.map((value: Product, index: number) => {
                             return (
-                                <tr><td>{index}</td>
+                                <tr key={index}><td>{index}</td>
                                     <td>{value.nameProduct}</td>
                                     <td>{value.unitPrice}</td>
                                     <td>{value.bagPrice}</td>
@@ -29,7 +39,10 @@ export const ItemProduct = (data: Product[]) => {
                             )
                         })
                     }
+                    <tr><td><button onClick={getProducts}>Recargar Productos</button></td></tr>
+
                 </tbody>
+
             </table>
         </>
     )

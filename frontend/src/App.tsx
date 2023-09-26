@@ -1,10 +1,13 @@
+import { ProductProvider } from "./context/products/productsContext";
 import { AppRouter } from "./routes/AppRouter";
 
 
 function App(): JSX.Element {
 
   return (
-    <AppRouter/>
+    <ProductProvider>
+      <AppRouter />
+    </ProductProvider>
   );
 }
 
