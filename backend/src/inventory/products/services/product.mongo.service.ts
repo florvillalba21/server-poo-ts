@@ -26,7 +26,8 @@ export class ProductServiceMongo implements ProductService {
     throw new Error('Method not implemented.')
   }
 
-  delete (id: string): Promise<Product | null> {
-    throw new Error('Method not implemented.')
+  async delete (id: string): Promise<Product | null> {
+    const productToDelete = await this.model.findByIdAndDelete(id)
+    return productToDelete
   }
 }

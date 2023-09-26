@@ -23,7 +23,10 @@ function startProductRouter (productService: ProductService) {
     res.send('update')
   })
 
-  ProductRouter.delete('/', (req, res) => {
+  ProductRouter.delete('/:id', async (req, res) => {
+    const idProduct = req.params.id
+    console.log(idProduct)
+    const deletedProduct = await productService.delete(idProduct)
     res.send('delete')
   })
 

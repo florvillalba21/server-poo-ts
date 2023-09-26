@@ -1,4 +1,5 @@
 import express, { Application } from 'express'
+import cors from 'cors'
 import { connectToMongo } from './configs/database'
 import { startProductRouter } from './inventory/products/product.controller'
 import { ProductServiceMongo } from './inventory/products/services/product.mongo.service'
@@ -13,6 +14,7 @@ export function startServer () {
 
   // middlewares
   app.use(express.json())
+  app.use(cors())
 
   // rutas
   app.use('/api/products', startProductRouter(new ProductServiceMongo()))
