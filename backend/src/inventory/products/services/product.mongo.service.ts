@@ -1,6 +1,7 @@
 import { Product } from '../product.entity'
 import { ProductModelMongo } from '../product.model'
 import { ProductService } from '../product.service'
+import { v4 as uuidv4 } from 'uuid';
 
 // Implementacion de un servicio de tareas con MongoDB
 export class ProductServiceMongo implements ProductService {
@@ -18,7 +19,8 @@ export class ProductServiceMongo implements ProductService {
   }
 
   async create (nameProduct: string, unitPrice: number, bagPrice: number, quantityPrice: number, stock: number): Promise<Product> {
-    const newProduct = await this.model.create({ nameProduct, unitPrice, bagPrice, quantityPrice, stock })
+    const id = uuidv4()
+    const newProduct = await this.model.create({id, nameProduct, unitPrice, bagPrice, quantityPrice, stock })
     return newProduct
   }
 

@@ -3,6 +3,10 @@ import { Product } from './product.entity'
 
 // Schema de una tarea en MongoDB con Mongoose
 const ProductSchemaMongo = new Schema<Product>({
+  id: {
+    type: String,
+    required: true
+  },
   nameProduct: {
     type: String,
     required: true
