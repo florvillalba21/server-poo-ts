@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Sale } from "./typeSale";
+import { Sale } from "./interface";
 
 const urlBase = "http://localhost:3000/api";
 

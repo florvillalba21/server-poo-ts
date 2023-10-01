@@ -1,13 +1,13 @@
 import axios from "axios";
-import { Product } from "./typeProduct";
+import { Product } from "./interface";
 
 const urlBase = "http://localhost:3000/api";
 
 export const getProducts = async () => {
   try {
-    const listProducts = await axios.get(urlBase + "/products");
+    const listProducts = await axios.get<Product[]>(urlBase + "/products");
 
-    const products = await listProducts.data
+    const products = listProducts.data
     return  products
   } catch (error) {
     console.log(error);
@@ -15,11 +15,13 @@ export const getProducts = async () => {
   }
 };
 
-export const createProduct = async (data: Product) => {
+export const createProduct = async (newProduct : Product) => {
   try {
-    const newProduct = await axios.post(urlBase + "/products", data);
+    const savedProduct = await axios.post(urlBase + "/products", newProduct);
 
-    return newProduct;
+    const product : Product = await savedProduct.data
+
+    return product;
   } catch (error) {
     console.log(error);
     throw new Error();

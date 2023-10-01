@@ -1,5 +1,7 @@
-import { useProductContext } from "../context/products/productsContext";
-import { Product } from "../utils/products/typeProduct"
+import { useContext } from "react";
+import { ProductContext } from "../context/products/productsContext";
+import { Product } from "../utils/products/interface"
+import { getProducts } from "../utils/products/products";
 
 // type Props = {
 //     data: string,
@@ -7,8 +9,7 @@ import { Product } from "../utils/products/typeProduct"
 // }
 
 export const ItemProduct = () => {
-    const { products, getProducts } = useProductContext();
-    console.log(products)
+    const products = useContext(ProductContext);
 
 
 
@@ -29,7 +30,7 @@ export const ItemProduct = () => {
                     {products &&
                         products.map((value: Product, index: number) => {
                             return (
-                                <tr key={index}><td>{index}</td>
+                                <tr key={index}><td>{index + 1}</td>
                                     <td>{value.nameProduct}</td>
                                     <td>{value.unitPrice}</td>
                                     <td>{value.bagPrice}</td>
@@ -39,8 +40,11 @@ export const ItemProduct = () => {
                             )
                         })
                     }
-                    <tr><td><button onClick={getProducts}>Recargar Productos</button></td></tr>
-
+                    <tr>
+                        <td>
+                            <button className="btn btn-primary" onClick={getProducts}> Recargar lista</button>
+                        </td>
+                    </tr>
                 </tbody>
 
             </table>

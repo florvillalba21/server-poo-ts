@@ -1,11 +1,11 @@
-import { ItemProduct } from "../components/itemProducts"
-
+import AddProductModal from "../components/AddProductModal";
+import { ItemProduct } from "../components/itemProducts";
 
 export const Products = () => {
-
-    return (
-        <>
-            <ItemProduct/>
-        </>
-    )
-}
+  return (
+    <>
+      <AddProductModal />
+      <ItemProduct />
+    </>
+  );
+};

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useProductContext } from "../context/products/productsContext";
-import { Product as OriginalProduct } from "../utils/products/typeProduct";
+import React, { useContext, useState } from "react";
+import { Product as OriginalProduct } from "../utils/products/interface";
+import { ProductContext } from "../context/products/productsContext";
 
 interface Product extends OriginalProduct {
   quantity: number;
 }
 
 export const SaleForm = () => {
-  const { products } = useProductContext();
+  const products  = useContext(ProductContext);
   const [cart, setCart] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string>(""); // Para almacenar el producto seleccionado
   const [quantity, setQuantity] = useState<number>(1); // Cantidad predeterminada: 1
