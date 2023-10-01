@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { ProductContext } from "../context/products/productsContext";
 import { Product } from "../utils/products/interface"
-import { getProducts } from "../utils/products/products";
 
 // type Props = {
 //     data: string,
@@ -9,9 +8,15 @@ import { getProducts } from "../utils/products/products";
 // }
 
 export const ItemProduct = () => {
-    const products = useContext(ProductContext);
+    const {products, fetchProducts} = useContext(ProductContext)
 
-
+  const handleReloadProducts = async () => {
+    try {
+      await fetchProducts();
+    } catch (error) {
+      console.error("Error al recargar la lista de productos:", error);
+    }
+  };
 
     return (
         <>
@@ -42,7 +47,7 @@ export const ItemProduct = () => {
                     }
                     <tr>
                         <td>
-                            <button className="btn btn-primary" onClick={getProducts}> Recargar lista</button>
+                            <button className="btn btn-primary" onClick={handleReloadProducts}> Recargar lista</button>
                         </td>
                     </tr>
                 </tbody>

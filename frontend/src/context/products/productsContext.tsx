@@ -5,8 +5,11 @@ import { Product } from "../../utils/products/interface";
 interface ProductProviderProps {
   children: ReactNode;
 }
-
-export const ProductContext = createContext<Product[] | null>(null);
+interface ProductContextProps {
+  products: Product[] | null;
+  fetchProducts: () => Promise<void>;
+}
+export const ProductContext = createContext<ProductContextProps | null>(null);
 
 
 export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
@@ -25,8 +28,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     fetchProducts();
   }, []);
 
+
   return (
-    <ProductContext.Provider value={products}>
+    <ProductContext.Provider value={{products, fetchProducts}}>
       {children}
     </ProductContext.Provider>
   );

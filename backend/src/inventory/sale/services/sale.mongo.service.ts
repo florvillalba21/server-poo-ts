@@ -1,8 +1,8 @@
 import { Product } from '../../products/product.entity'
+import { ProductModelMongo } from '../../products/product.model'
 import { Sale } from '../sale.entity'
 import { SaleModelMongo } from '../sale.model'
 import { SaleService } from '../sale.service'
-import { SaleTypes } from '../saleType'
 
 export class SaleServiceMongo implements SaleService {
   model = SaleModelMongo
@@ -15,25 +15,39 @@ export class SaleServiceMongo implements SaleService {
     return this.model.findById(id)
   }
 
-  calculateTotal (saleType: SaleTypes, products: Product[]): number {
-    let total : number = 0
-    products.forEach(element => {
-      console.log(element)
-      if (saleType === SaleTypes.Unidad) {
-        total += element.unitPrice
-      } else if (saleType === SaleTypes.Cantidad) {
-        total += element.quantityPrice * element.quantity
-        console.log(element.quantityPrice * element.quantity)
-      } else if (saleType === SaleTypes.Bolsa) {
-        total += element.bagPrice * element.quantity
+  calculateTotal(products: Product[]): number {
+    let total: number = 0;
+
+    products.forEach((element) => {
+      let price: number;
+
+      if (element.quantity === 1) {
+        price = element.unitPrice;
+      } else if (element.quantity >= 2 && element.quantity <= 5) {
+        price = element.bagPrice;
+      } else {
+        price = element.quantityPrice;
       }
-    }
-    )
-    return total
+
+      total += price * element.quantity;
+    });
+
+    return total;
   }
 
-  async create (products: Product[], date: string, saleType: SaleTypes, total: number): Promise<Sale> {
-    const newSale = await this.model.create({ products, date, saleType, total })
+  async create (products: Product[], date: string, total: number): Promise<Sale> {
+
+     // Actualizar el stock de los productos vendidos
+     for (const product of products) {
+       const existingProduct = await ProductModelMongo.findOne({ id: product.id });
+ 
+       if (existingProduct) {
+         existingProduct.stock -= product.quantity;
+         await existingProduct.save();
+       }
+     }
+
+    const newSale = await this.model.create({ products, date, total })
     return newSale
   }
 

@@ -10,10 +10,6 @@ const SaleSchemaMongo = new Schema <Sale>({
     type: String,
     required: true
   },
-  saleType: {
-    type: String,
-    required: true
-  },
   total: {
     type: Number,
     required: true

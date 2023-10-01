@@ -28,16 +28,6 @@ export const createProduct = async (newProduct : Product) => {
   }
 };
 
-export const updateProduct = async () => {
-  try {
-    const updatedProduct = await axios.put(urlBase + "/products");
-    return updatedProduct;
-  } catch (error) {
-    console.log(error);
-    throw new Error();
-  }
-};
-
 export const deleteProduct = async () => {
   try {
     const deletedProduct = await axios.delete(urlBase + "/products");

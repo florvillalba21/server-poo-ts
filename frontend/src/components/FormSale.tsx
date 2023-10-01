@@ -1,16 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Product as OriginalProduct } from "../utils/products/interface";
 import { ProductContext } from "../context/products/productsContext";
+import { Sale } from "../utils/sales/interface";
+import { createSale } from "../utils/sales/sales";
 
 interface Product extends OriginalProduct {
   quantity: number;
 }
 
 export const SaleForm = () => {
-  const products  = useContext(ProductContext);
+  const { products } = useContext(ProductContext);
   const [cart, setCart] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<string>(""); // Para almacenar el producto seleccionado
-  const [quantity, setQuantity] = useState<number>(1); // Cantidad predeterminada: 1
+  const [selectedProduct, setSelectedProduct] = useState<string>("");
+  const [quantity, setQuantity] = useState<number>(1);
 
   const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedProduct(e.target.value);
@@ -36,7 +38,7 @@ export const SaleForm = () => {
         });
         setCart(updatedCart);
       } else {
-        const selectedProductInfo = products?.find((product) => product.nameProduct === selectedProduct);
+        const selectedProductInfo = products?.find((product: Product) => product.nameProduct === selectedProduct);
         if (selectedProductInfo) {
           const newCartItem: Product = {
             ...selectedProductInfo,
@@ -51,15 +53,35 @@ export const SaleForm = () => {
     }
   };
 
+  const sell = async () => {
+    try {
+      const saleData: Sale = {
+        products: cart,
+        date: new Date().toString(),
+      };
+
+
+      const newSale = await createSale(saleData);
+      if (newSale) {
+        alert("Venta realizada")
+
+      }
+
+      setCart([]);
+    } catch (error) {
+      console.error("Error al realizar la venta:", error);
+    }
+  };
+
   return (
-    <div>
-      <h1>Vender Productos</h1>
-      <div>
+    <div style={{ display: "flex" }}>
+      <div className="container">
+        <h1>Vender Productos</h1>
         <label htmlFor="productSelect">Seleccione un producto:</label>
-        <select id="productSelect" onChange={handleProductChange} value={selectedProduct}>
+        <select id="productSelect" onChange={handleProductChange} value={selectedProduct} className="form-control">
           <option value="">Seleccionar producto</option>
           {products &&
-            products.map((product) => (
+            products.map((product: Product) => (
               <option key={product.id} value={product.nameProduct}>
                 {product.nameProduct}
               </option>
@@ -67,17 +89,18 @@ export const SaleForm = () => {
         </select>
         <label htmlFor="quantityInput">Cantidad:</label>
         <input
+          className="form-control"
           type="number"
           id="quantityInput"
           value={quantity}
           onChange={handleQuantityChange}
           min="1"
         />
-        <button onClick={addToCart} disabled={!selectedProduct || quantity <= 0}>
+        <button className="btn btn-primary" onClick={addToCart} disabled={!selectedProduct || quantity <= 0}>
           Agregar al Carrito
         </button>
       </div>
-      <div>
+      <div className="container">
         <h2>Carrito de Compras</h2>
         <ul>
           {cart.map((item) => (
@@ -86,7 +109,11 @@ export const SaleForm = () => {
             </li>
           ))}
         </ul>
+        <div>
+          <button onClick={sell} className="btn btn-primary"> Vender </button>
+        </div>
       </div>
+
     </div>
   );
 };

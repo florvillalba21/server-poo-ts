@@ -10,12 +10,6 @@ export const Home = () => {
             />
 
             <CardHome
-                name="Ventas"
-                description="Ver la lista de ventas"
-                url="/sales/list"
-            />
-
-            <CardHome
                 name="Vender"
                 description="Ir al formulario de ventas"
                 url="/sales/form"

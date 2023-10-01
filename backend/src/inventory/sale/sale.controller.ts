@@ -10,9 +10,9 @@ function startSaleRouter (saleService: SaleService) {
   })
 
   saleRouter.post('/', async (req, res) => {
-    const { products, date, saleType } = req.body
-    const importTotal = saleService.calculateTotal(saleType, products)
-    const newSale = await saleService.create(products, date, saleType, importTotal)
+    const { products, date } = req.body
+    const importTotal = saleService.calculateTotal(products)
+    const newSale = await saleService.create(products, date, importTotal)
     res.status(200).json(newSale)
   })
 
